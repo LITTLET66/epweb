@@ -3,122 +3,142 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>登录 - 公共资源交易littlet分中心</title>
-    <!-- 引入 Element UI 样式 -->
-    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <title>企业招采平台-littlet</title>
+    <!-- 引入FontAwesome用于图标显示 -->
+    <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <!-- 引入自定义样式 -->
     <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="/index.css">
 </head>
 <body>
-    
-    <div id="app" class="login-container">
-        <!-- 顶部标题栏 -->
-        <header class="main-header">
-            <div class="logo-area">
-                <img src="https://picsum.photos/50/50" alt="Logo" class="logo-img">
-                <span class="system-title">公共资源交易littlet分中心</span>
-            </div>
-        </header>
 
-        <!-- 登录内容区 -->
-        <main class="login-content">
-            <div class="login-box">
-                <div class="login-header">
-                    <h2>用户登录</h2>
-                    <p>User Login</p>
-                </div>
-
-                <!-- 身份切换 Tabs -->
-                <el-tabs v-model="activeRole" @tab-click="handleRoleChange" :stretch="true">
-                    <el-tab-pane label="供应商" name="supplier"></el-tab-pane>
-                    <el-tab-pane label="专 家" name="expert"></el-tab-pane>
-                    <el-tab-pane label="中 心" name="center"></el-tab-pane>
-                    <el-tab-pane label="代 理" name="agent"></el-tab-pane>
-                </el-tabs>
-
-                <!-- 登录表单 -->
-                <el-form :model="loginForm" :rules="rules" ref="loginForm" class="login-form">
-                    
-                    <!-- 账号 -->
-                    <el-form-item prop="username">
-                        <el-input 
-                            v-model="loginForm.username" 
-                            prefix-icon="el-icon-user" 
-                            :placeholder="usernamePlaceholder">
-                        </el-input>
-                    </el-form-item>
-
-                    <!-- 密码 -->
-                    <el-form-item prop="password">
-                        <el-input 
-                            type="password" 
-                            v-model="loginForm.password" 
-                            prefix-icon="el-icon-lock" 
-                            placeholder="请输入登录密码"
-                            show-password>
-                        </el-input>
-                    </el-form-item>
-
-                    <!-- 验证码 -->
-                    <el-form-item prop="captcha">
-                        <div class="captcha-row">
-                            <el-input 
-                                v-model="loginForm.captcha" 
-                                prefix-icon="el-icon-key" 
-                                placeholder="请输入验证码"
-                                class="captcha-input"
-                                @keyup.enter.native="submitForm">
-                            </el-input>
-                            <div class="captcha-img-box" @click="refreshCaptcha" title="点击刷新验证码">
-                                <!-- 使用样式模拟验证码图片，实际项目中应为img标签src指向接口 -->
-                                <span class="mock-captcha-text">{{ captchaCode }}</span>
-                            </div>
-                        </div>
-                    </el-form-item>
-
-                    <!-- 操作行 -->
-                    <div class="form-options">
-                        <el-checkbox v-model="rememberMe">记住账号</el-checkbox>
-                        <a href="javascript:void(0)" class="forgot-pwd">忘记密码?</a>
-                    </div>
-
-                    <!-- 登录按钮 -->
-                    <el-button type="primary" :loading="loading" class="login-btn" @click="submitForm">
-                        {{ loading ? '登录中...' : '立即登录' }}
-                    </el-button>
-
-                </el-form>
-
-                <!-- 演示：滚动字段容器 (系统公告) -->
-                <div class="notice-container">
-                    <span class="notice-label"><i class="el-icon-bell"></i> 公告：</span>
-                    <div class="scroll-field-wrapper" id="noticeScrollBox">
-                        <div class="scroll-content" id="noticeContent">
-                            系统维护通知：本系统将于今晚24:00进行例行维护，请各交易主体提前做好业务安排，给您带来的不便敬请谅解。如有疑问请联系中心技术支持。
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </main>
-
-        <footer class="main-footer">
-            <p>&copy; 2024 公共资源交易littlet分中心 版权所有 | 技术支持：LittleT Tech</p>
-        </footer>
+    <!-- 顶部标题 -->
+    <div class="page-header">
+        <h1>企业招采平台-littlet</h1>
     </div>
 
-    <!-- 脚本引入 -->
-    <!-- 1. Vue.js -->
-    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.7.14/vue.min.js"></script>
-    <!-- 2. Element UI -->
-    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
-    <!-- 3. jQuery -->
-    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-    <!-- 4. Mock.js -->
-    <script src="https://cdn.bootcdn.net/ajax/libs/Mock.js/1.0.1-beta3/mock-min.js"></script>
+    <!-- 登录主体卡片 -->
+    <div class="login-container">
+        
+        <!-- 左侧：扫码区域 -->
+        <div class="login-left">
+            <div class="scan-title">APP扫码</div>
+            <div class="qr-box">
+                <!-- 使用模拟的二维码图片 -->
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=AppDownloadOrLogin" alt="扫码登录">
+            </div>
+            <div class="scan-tip">
+                <p>打开标证通，扫一扫登录</p>
+                <p class="sub-tip">(若未下载APP，请先<a href="#">下载安装</a>)</p>
+            </div>
+            <!-- 装饰性背景圆弧通过CSS实现 -->
+        </div>
 
-    <!-- 5. 项目脚本 -->
+        <!-- 右侧：表单区域 -->
+        <div class="login-right">
+            
+            <!-- 顶部Tab切换 -->
+            <div class="login-tabs">
+                <div class="tab-item active" data-target="account">账号登录</div>
+                <div class="tab-item" data-target="ca">CA登录</div>
+                <div class="tab-item" data-target="mobile">手机登录</div>
+            </div>
+
+            <!-- 1. 账号登录表单 -->
+            <div class="form-content-box" id="form-account">
+                <div class="input-group">
+                    <span class="input-icon"><i class="fas fa-user"></i></span>
+                    <input type="text" id="username" placeholder="请输入账号" autocomplete="off">
+                </div>
+                
+                <div class="input-group">
+                    <span class="input-icon"><i class="fas fa-lock"></i></span>
+                    <input type="password" id="password" placeholder="请输入密码" autocomplete="off">
+                    <span class="input-suffix" id="toggle-pwd"><i class="fas fa-eye-slash"></i></span>
+                </div>
+
+                <button type="button" class="btn-login" id="submit-btn">登 录</button>
+            </div>
+
+            <!-- 2. CA登录表单 (新增) -->
+            <div class="form-content-box" id="form-ca" style="display: none;">
+                <div class="ca-login-wrapper">
+                    <div class="ca-qr-img">
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=CALoginAuth" alt="CA扫码">
+                        <!-- 模拟扫描遮罩 -->
+                        <div class="qr-mask">
+                            <i class="fas fa-check-circle"></i>
+                            <p>请插入CA锁或扫描二维码</p>
+                        </div>
+                    </div>
+                    <p class="ca-tip">请使用CA助手APP扫描二维码<br>或插入USB Key进行登录</p>
+                    <button type="button" class="btn-login btn-outline">检测CA驱动</button>
+                </div>
+            </div>
+
+            <!-- 3. 手机登录表单 (新增) -->
+            <div class="form-content-box" id="form-mobile" style="display: none;">
+                <div class="input-group">
+                    <span class="input-icon"><i class="fas fa-mobile-alt"></i></span>
+                    <input type="text" id="mobile-phone" placeholder="请输入手机号码" maxlength="11" autocomplete="off">
+                </div>
+                
+                <div class="input-group-flex">
+                    <div class="input-group input-half">
+                        <span class="input-icon"><i class="fas fa-shield-alt"></i></span>
+                        <input type="text" id="mobile-code" placeholder="验证码" maxlength="6" autocomplete="off">
+                    </div>
+                    <button type="button" class="btn-send-code" id="btn-send-code">获取验证码</button>
+                </div>
+
+                <button type="button" class="btn-login" id="submit-mobile-btn">登 录</button>
+            </div>
+
+            <!-- 公共底部链接 -->
+            <div class="form-links">
+                <a href="#">环境一键修复</a>
+                <a href="#">专家注册</a>
+            </div>
+
+            <!-- 底部辅助功能图标 -->
+            <div class="form-footer-icons">
+                <div class="icon-item" onclick="window.location.href='help.html'">
+                    <i class="far fa-question-circle"></i>
+                    <span>常见问题</span>
+                </div>
+                <div class="icon-item" onclick="window.location.href='help.html'">
+                    <i class="fas fa-download"></i>
+                    <span>驱动下载</span>
+                </div>
+                <div class="icon-item" onclick="window.location.href='reset.html'">
+                    <i class="fas fa-unlock-alt"></i>
+                    <span>忘记密码</span>
+                </div>
+            </div>
+
+            <!-- 底部浏览器推荐 -->
+            <div class="browser-tip">
+                推荐使用浏览器下载
+                <i class="fab fa-chrome" style="color: #4285F4;"></i>
+                <i class="fab fa-edge" style="color: #0078D7;"></i>
+                <i class="fab fa-internet-explorer" style="color: #1EBBEE;"></i>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- 模拟接口配置 -->
+    <script>
+        var _settings = {
+            login: 'userLogin',
+            sendCode: 'sendSmsCode'
+        };
+    </script>
+    <!-- 引入 jQuery -->
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- 引入 Mock.js -->
+    <script src="https://cdn.bootcdn.net/ajax/libs/Mock.js/1.0.0/mock-min.js"></script>
+    <!-- 引入项目脚本 -->
     <script src="js/config.js"></script>
     <script src="js/mock.js"></script>
     <script src="js/login.js"></script>
